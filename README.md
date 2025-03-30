@@ -53,3 +53,49 @@ export async function GET() {
   - `"Hello World"` – bu API javobining ichidagi oddiy matn.
 
 Bu funksiya `app/hello/route.ts` ichida yozilgan brauzer yoki Postman orqali `http://localhost:3000/hello` manziliga `GET` so‘rovi yuborilsa, javob sifatida `"Hello World"` qaytariladi.
+
+---
+
+# **2-dars Handling GET Requests**
+
+`GET Request` – bu HTTP so‘rov turi bo‘lib, serverdan ma’lumot olish uchun ishlatiladi.
+Serverga so‘rov yuboriladi va u javob sifatida kerakli ma’lumotni qaytaradi (masalan, `mahsulotlar ro‘yxati`, `foydalanuvchi ma’lumotlari`).
+
+ushbu darsda biz `comments` nomli `route` yaratdik va backendan foydalanuvchi yozgan commetnlarni qaytaradigan yani frontendga uzatadigan `api` yozdik
+
+`/app/comments/data.ts`
+
+```ts
+export const comments = [
+  {
+    id: 1,
+    text: "This is the first comment",
+  },
+  {
+    id: 2,
+    text: "This is the second comment",
+  },
+  {
+    id: 3,
+    text: "This is the third comment",
+  },
+];
+```
+
+- Bu foydalanuvchilar yozgan commentlar (`mockdata`).
+- Hozircha databazaga ulanmaganligimiz sababli shundan foydalanib turamiz
+
+`/app/comments/route.ts`
+
+```ts
+import { comments } from "./data";
+
+export async function GET() {
+  return Response.json(comments);
+}
+```
+
+- Bu kod orqali `comment` `mockdata` sini javob sifatida frotendga qaytaramiz
+- `export async function GET()` – Next.js API route'ida `GET` so‘rovlarini boshqarish uchun ishlatiladigan funksiya.
+- `Response.json(comments)` – JSON formatida `comments` ma’lumotlarini qaytaradi.
+- `return` orqali `brauzer` yoki `frontend` bu ma’lumotni olish va foydalanish imkoniyatiga ega bo‘ladi.
