@@ -11,6 +11,16 @@
 
 ---
 
+| Mundarija                              |
+| -------------------------------------- |
+| [1-dars Route Handlers][1-dars]        |
+| [2-dars Handling GET Requests][2-dars] |
+
+[1-dars]: https://github.com/muhriddin20056525/nextjs15-route-handlers?tab=readme-ov-file#1-dars-route-handlers
+[2-dars]: https://github.com/muhriddin20056525/nextjs15-route-handlers?tab=readme-ov-file#2-dars-handling-get-requests
+
+---
+
 # **1-dars Route Handlers**
 
 `Route handlers` – bu Next.js ichida `API` yaratish uchun ishlatiladigan funksiyalar bo‘lib, ular `app` papkasi ichida joylashadi. Ushbu handlerlar orqali biz `API` endpointlar yaratamiz va ularga so‘rovlar yuborishimiz mumkin.
@@ -99,3 +109,41 @@ export async function GET() {
 - `export async function GET()` – Next.js API route'ida `GET` so‘rovlarini boshqarish uchun ishlatiladigan funksiya.
 - `Response.json(comments)` – JSON formatida `comments` ma’lumotlarini qaytaradi.
 - `return` orqali `brauzer` yoki `frontend` bu ma’lumotni olish va foydalanish imkoniyatiga ega bo‘ladi.
+
+---
+
+# **3-dars Handling POST Requests**
+
+`POST request` — foydalanuvchi tomonidan serverga ma'lumot yuborish usuli. Odatda forma yuborishda ishlatiladi. Bu so‘rov ma’lumotni `URL` orqali emas, yashirin tarzda yuboradi.
+
+```ts
+import { comments } from "./data";
+
+export async function POST(request: Request) {
+  const comment = await request.json();
+  const newComment = {
+    id: comments.length + 1,
+    text: comment.text,
+  };
+
+  comments.push(newComment);
+
+  return new Response(JSON.stringify(newComment), {
+    headers: { "Content-Type": "application/json" },
+    status: 201,
+  });
+}
+```
+
+- `import { comments } from "./data";`
+  - Bu qator `comments` degan massivni `./data` faylidan import qiladi. comments massivida mavjud bo‘lgan sharhlar saqlanadi.
+- `export async function POST(request: Request)`
+  - Bu Next.js’da `POST` metodini ishlatish uchun funksiya yaratish. Bu funksiya `asinxron`, chunki `request.json()` yordamida ma'lumotlarni olish uchun vaqt kerak bo‘ladi.
+- `const comment = await request.json();`
+  - Bu qatorda `request.json()` metodi yordamida foydalanuvchidan yuborilgan `POST` so‘rovini JSON formatda olib keladi va uni comment o'zgaruvchisiga saqlaydi. Bu yerda foydalanuvchi yuborgan ma'lumot (masalan, izoh matni) olinadi.
+- `const newComment = { id: comments.length + 1, text: comment.text };`
+  - Bu yerda yangi izoh (`newComment`) yaratilyapti. `id` yangi izoh uchun avtomatik hisoblanadi — ya'ni, comments massividagi izohlar sonidan bittaga ko‘paytiriladi. text esa foydalanuvchidan yuborilgan `comment.text` qiymatidan olingan.
+- `comments.push(newComment);`
+  - Yangi izoh `comments` massiviga qo‘shiladi. Bu yangi izohni saqlash operatsiyasidir.
+- `return new Response(JSON.stringify(newComment), { headers: { "Content-Type": "application/json" }, status: 201, });`
+  - Bu qatorda `newCommentni` `JSON` formatiga o‘zgartirib (`JSON.stringify` yordamida) qaytaradi. So‘rovni muvaffaqiyatli bajargani uchun `HTTP` status kodi `201` (yaratildi) bo‘ladi. `Content-Type` sarlavhasi `application/json` bo‘ladi, bu serverning javobi JSON formatida ekanligini bildiradi.
