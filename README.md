@@ -147,3 +147,30 @@ export async function POST(request: Request) {
   - Yangi izoh `comments` massiviga qo‘shiladi. Bu yangi izohni saqlash operatsiyasidir.
 - `return new Response(JSON.stringify(newComment), { headers: { "Content-Type": "application/json" }, status: 201, });`
   - Bu qatorda `newCommentni` `JSON` formatiga o‘zgartirib (`JSON.stringify` yordamida) qaytaradi. So‘rovni muvaffaqiyatli bajargani uchun `HTTP` status kodi `201` (yaratildi) bo‘ladi. `Content-Type` sarlavhasi `application/json` bo‘ladi, bu serverning javobi JSON formatida ekanligini bildiradi.
+
+---
+
+# **4-dars Dynamic Route Handlers**
+
+`Dynamic Route Handlers` Next.js'da URL'dagi o‘zgaruvchan (dinamik) qiymatlar bilan ishlash uchun ishlatiladi. Masalan, har xil ID, username yoki slug'ga qarab ma'lumotni olish, yangilash yoki o‘chirish kerak bo‘lsa, aynan shu handlerlar kerak bo‘ladi. Bu orqali har bir foydalanuvchi yoki mahsulot uchun alohida route yozish shart bo‘lmaydi — bitta dynamic route hammasini qamrab oladi. Ular asosan API endpointlarda yoki sahifa (page) URL'larida mos ma'lumotni ko‘rsatish uchun xizmat qiladi.
+
+```ts
+// app/comments/[id]/route.ts
+
+import { comments } from "../data";
+
+export async function GET(
+  _request: Request,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  const { id } = await params;
+
+  const comment = comments.find((comment) => comment.id === parseInt(id));
+  return Response.json(comment);
+}
+```
+
+- Dynamic routelar `[]` qavslar ichida ochiladi
+- `[id]` bu mahsulotning id sini olish uchun ishlatiladi
+- `http://localhost:300/comments/1` bu apiga so'rov yuborish endpoint bo'ladi oxiridagi `1` bu id
+- `{ params }: { params: Promise<{ id: string }> }` - `[id]` id ni paramsga saqlaydi bu usul bilan type berib paramsdan id ni chiqarib olish mumkin funksiyaning parametri orqali
