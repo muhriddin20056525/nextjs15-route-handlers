@@ -11,13 +11,17 @@
 
 ---
 
-| Mundarija                              |
-| -------------------------------------- |
-| [1-dars Route Handlers][1-dars]        |
-| [2-dars Handling GET Requests][2-dars] |
+| Mundarija                               |
+| --------------------------------------- |
+| [1-dars Route Handlers][1-dars]         |
+| [2-dars Handling GET Requests][2-dars]  |
+| [3-dars Handling POST Requests][3-dars] |
+| [4-dars Dynamic Route Handlers][4-dars] |
 
 [1-dars]: https://github.com/muhriddin20056525/nextjs15-route-handlers?tab=readme-ov-file#1-dars-route-handlers
 [2-dars]: https://github.com/muhriddin20056525/nextjs15-route-handlers?tab=readme-ov-file#2-dars-handling-get-requests
+[3-dars]: https://github.com/muhriddin20056525/nextjs15-route-handlers?tab=readme-ov-file#3-dars-handling-post-requests
+[4-dars]: https://github.com/muhriddin20056525/nextjs15-route-handlers?tab=readme-ov-file#4-dars-dynamic-route-handlers
 
 ---
 
@@ -174,3 +178,55 @@ export async function GET(
 - `[id]` bu mahsulotning id sini olish uchun ishlatiladi
 - `http://localhost:300/comments/1` bu apiga so'rov yuborish endpoint bo'ladi oxiridagi `1` bu id
 - `{ params }: { params: Promise<{ id: string }> }` - `[id]` id ni paramsga saqlaydi bu usul bilan type berib paramsdan id ni chiqarib olish mumkin funksiyaning parametri orqali
+
+---
+
+# **5-dars Handling PATCH Requests**
+
+`PATCH` so'rovi HTTP protokolida ma'lumotlarni qisman yangilash uchun ishlatiladi. Bu metod resursning to'liq qayta yozilishi o'rniga faqat kerakli qismlarini yangilashga imkon beradi. Masalan, foydalanuvchi ma'lumotlarini yangilashda, faqat bir nechta maydonni o'zgartirish kerak bo'lsa, PATCH so'rovi samarali va resursni tejashga yordam beradi. Bu usul, ayniqsa katta ma'lumotlar bazasi bilan ishlaganda yoki faqat kichik o'zgarishlar qilishda foydalidir.
+
+```tsx
+export async function PATCH(
+  request: Request,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  const { id } = await params;
+
+  const body = await request.json();
+  const { text } = body;
+
+  const index = comments.findIndex((comment) => comment.id === parseInt(id));
+  comments[index].text = text;
+  return Response.json(comments[index]);
+}
+```
+
+`export async function PATCH(request, { params })`:
+
+- `PATCH` — bu PATCH so'rovini ishlov berish uchun ishlatilgan metod.
+- `request: Request` — bu request obyektini olish uchun parametr, unda so'rovning ma'lumotlari (masalan, JSON body) bo'ladi.
+- `{ params }: { params: Promise<{ id: string }> }` — bu yerda params dinamik URL parametrlari (masalan, `id`) sifatida uzatiladi va ular `Promise` sifatida qaytariladi. Bu `id` qiymati kerak bo'lganda olinadi.
+
+`const { id } = await params;`:
+
+- `params` o'zgaruvchisidan `id` ni olish uchun `await` ishlatilgan. Bu `id` URL-dan olinadi va u foydalanuvchining qaysi `comment`ni yangilashini belgilaydi.
+
+`const body = await request.json();`:
+
+- So'rovning body qismini olish uchun `request.json()` metodi ishlatiladi. Bu metod JSON formatidagi ma'lumotni olib, uni JavaScript obyektiga aylantiradi.
+
+`const { text } = body;`:
+
+- JSON body'dan `text` ma'lumotini olish. Bu foydalanuvchi tomonidan yuborilgan yangilangan matnni anglatadi.
+
+`const index = comments.findIndex((comment) => comment.id === parseInt(id));`:
+
+- `comments` massivida `id` qiymati bilan teng bo'lgan `comment`ni topish uchun `findIndex` metodi ishlatilgan. `id` ni `parseInt` orqali sonli qiymatga o'zgartirganimiz sababli, `comments` massividagi `id` bilan solishtiriladi.
+
+`comments[index].text = text;`:
+
+- `comments` massividagi topilgan `comment`ni yangilash. `index` orqali topilgan elementning `text` maydoni yangilanadi, ya'ni foydalanuvchi tomonidan yuborilgan yangi `text` qiymati bilan almashtiriladi.
+
+`return Response.json(comments[index]);`:
+
+- Yangilangan `comment`ni JSON formatida javob sifatida qaytaradi. Bu foydalanuvchiga yangilangan ma'lumotni yuboradi.
