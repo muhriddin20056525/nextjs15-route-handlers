@@ -11,17 +11,19 @@
 
 ---
 
-| Mundarija                               |
-| --------------------------------------- |
-| [1-dars Route Handlers][1-dars]         |
-| [2-dars Handling GET Requests][2-dars]  |
-| [3-dars Handling POST Requests][3-dars] |
-| [4-dars Dynamic Route Handlers][4-dars] |
+| Mundarija                                |
+| ---------------------------------------- |
+| [1-dars Route Handlers][1-dars]          |
+| [2-dars Handling GET Requests][2-dars]   |
+| [3-dars Handling POST Requests][3-dars]  |
+| [4-dars Dynamic Route Handlers][4-dars]  |
+| [5-dars Handling PATCH Requests][5-dars] |
 
 [1-dars]: https://github.com/muhriddin20056525/nextjs15-route-handlers?tab=readme-ov-file#1-dars-route-handlers
 [2-dars]: https://github.com/muhriddin20056525/nextjs15-route-handlers?tab=readme-ov-file#2-dars-handling-get-requests
 [3-dars]: https://github.com/muhriddin20056525/nextjs15-route-handlers?tab=readme-ov-file#3-dars-handling-post-requests
 [4-dars]: https://github.com/muhriddin20056525/nextjs15-route-handlers?tab=readme-ov-file#4-dars-dynamic-route-handlers
+[5-dars]: https://github.com/muhriddin20056525/nextjs15-route-handlers?tab=readme-ov-file#5-dars-handling-patch-requests
 
 ---
 
@@ -230,3 +232,33 @@ export async function PATCH(
 `return Response.json(comments[index]);`:
 
 - Yangilangan `comment`ni JSON formatida javob sifatida qaytaradi. Bu foydalanuvchiga yangilangan ma'lumotni yuboradi.
+
+---
+
+# **6-dars Handling DELETE Requests**
+
+`DELETE` request ma’lumotni serverdan o‘chirish uchun ishlatiladi.
+Masalan, foydalanuvchi postni o‘chirmoqchi bo‘lsa, `DELETE` so‘rov yuboradi.
+Backend ushbu so‘rovni qabul qilib, kerakli ma’lumotni bazadan o‘chiradi.
+
+```tsx
+export async function DELETE(
+  _request: Request,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  const { id } = await params;
+
+  const index = comments.findIndex((comment) => comment.id === parseInt(id));
+  const deletedComment = comments[index];
+  comments.splice(index, 1);
+
+  return Response.json(deletedComment);
+}
+```
+
+- `export async function DELETE(_request: Request,{ params }: { params: Promise<{ id: string }> })` - DELETE request ochish
+- `const { id } = await params;` - paramsdan `id` ni olish
+- `const index = comments.findIndex((comment) => comment.id === parseInt(id));` - Bu yerda id bo‘yicha mos comment qidiriladi va uning indeks raqami topiladi.
+- `const deletedComment = comments[index];` - Topilgan comment vaqtincha deletedComment nomli o‘zgaruvchida saqlanadi.
+- `comments.splice(index, 1);` - Bu qator index bo‘yicha massivdan bitta elementni o‘chiradi.
+- `return Response.json(deletedComment);` O‘chirilgan comment JSON shaklida qaytariladi.
