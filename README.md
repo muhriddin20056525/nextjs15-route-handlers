@@ -11,19 +11,21 @@
 
 ---
 
-| Mundarija                                |
-| ---------------------------------------- |
-| [1-dars Route Handlers][1-dars]          |
-| [2-dars Handling GET Requests][2-dars]   |
-| [3-dars Handling POST Requests][3-dars]  |
-| [4-dars Dynamic Route Handlers][4-dars]  |
-| [5-dars Handling PATCH Requests][5-dars] |
+| Mundarija                                 |
+| ----------------------------------------- |
+| [1-dars Route Handlers][1-dars]           |
+| [2-dars Handling GET Requests][2-dars]    |
+| [3-dars Handling POST Requests][3-dars]   |
+| [4-dars Dynamic Route Handlers][4-dars]   |
+| [5-dars Handling PATCH Requests][5-dars]  |
+| [6-dars Handling DELETE Requests][6-dars] |
 
 [1-dars]: https://github.com/muhriddin20056525/nextjs15-route-handlers?tab=readme-ov-file#1-dars-route-handlers
 [2-dars]: https://github.com/muhriddin20056525/nextjs15-route-handlers?tab=readme-ov-file#2-dars-handling-get-requests
 [3-dars]: https://github.com/muhriddin20056525/nextjs15-route-handlers?tab=readme-ov-file#3-dars-handling-post-requests
 [4-dars]: https://github.com/muhriddin20056525/nextjs15-route-handlers?tab=readme-ov-file#4-dars-dynamic-route-handlers
 [5-dars]: https://github.com/muhriddin20056525/nextjs15-route-handlers?tab=readme-ov-file#5-dars-handling-patch-requests
+[6-dars]: https://github.com/muhriddin20056525/nextjs15-route-handlers?tab=readme-ov-file#6-dars-handling-delete-requests
 
 ---
 
@@ -262,3 +264,26 @@ export async function DELETE(
 - `const deletedComment = comments[index];` - Topilgan comment vaqtincha deletedComment nomli o‘zgaruvchida saqlanadi.
 - `comments.splice(index, 1);` - Bu qator index bo‘yicha massivdan bitta elementni o‘chiradi.
 - `return Response.json(deletedComment);` O‘chirilgan comment JSON shaklida qaytariladi.
+
+---
+
+# **7-dars URL Query Parameters**
+
+`query parametr` — bu URL orqali komponentga ma’lumot yuborish usuli. Ular ?name=Ali&age=25 kabi ko‘rinishda bo‘ladi. Masalan, /users?id=123 orqali id qiymatini olish mumkin. Ular sahifalarni dinamik qilish, filtr, qidiruv yoki sahifalash (pagination) uchun ishlatiladi. useSearchParams yoki useRouter().query orqali o‘qiladi.
+
+```tsx
+export async function GET(request: NextRequest) {
+  const searchParams = request.nextUrl.searchParams;
+  const query = searchParams.get("query");
+
+  const filteredComments = query
+    ? comments.filter((comment) => comment.text.includes(query))
+    : comments;
+
+  return Response.json(filteredComments);
+}
+```
+
+- `NextRequest` — URL, headers va boshqa ma'lumotlarni o‘z ichiga oladi.
+- `request.nextUrl.searchParams` - orqali `URL`'dagi `query` parametrlarga murojaat qilinmoqda. Masalan: `/comments?query=salom`
+- `query` - deb nomlangan parametr qiymati olinadi. Masalan, yuqoridagi misolda `query = "salom"` bo‘ladi.
