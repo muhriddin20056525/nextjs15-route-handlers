@@ -19,6 +19,7 @@
 | [4-dars Dynamic Route Handlers][4-dars]   |
 | [5-dars Handling PATCH Requests][5-dars]  |
 | [6-dars Handling DELETE Requests][6-dars] |
+| [7-dars URL Query Parameters][7-dars]     |
 
 [1-dars]: https://github.com/muhriddin20056525/nextjs15-route-handlers?tab=readme-ov-file#1-dars-route-handlers
 [2-dars]: https://github.com/muhriddin20056525/nextjs15-route-handlers?tab=readme-ov-file#2-dars-handling-get-requests
@@ -26,6 +27,7 @@
 [4-dars]: https://github.com/muhriddin20056525/nextjs15-route-handlers?tab=readme-ov-file#4-dars-dynamic-route-handlers
 [5-dars]: https://github.com/muhriddin20056525/nextjs15-route-handlers?tab=readme-ov-file#5-dars-handling-patch-requests
 [6-dars]: https://github.com/muhriddin20056525/nextjs15-route-handlers?tab=readme-ov-file#6-dars-handling-delete-requests
+[7-dars]: https://github.com/muhriddin20056525/nextjs15-route-handlers?tab=readme-ov-file#7-dars-url-query-parameters
 
 ---
 
@@ -287,3 +289,65 @@ export async function GET(request: NextRequest) {
 - `NextRequest` — URL, headers va boshqa ma'lumotlarni o‘z ichiga oladi.
 - `request.nextUrl.searchParams` - orqali `URL`'dagi `query` parametrlarga murojaat qilinmoqda. Masalan: `/comments?query=salom`
 - `query` - deb nomlangan parametr qiymati olinadi. Masalan, yuqoridagi misolda `query = "salom"` bo‘ladi.
+
+---
+
+# **8-dars Headers in Route Handlers**
+
+`Headers in Route Handlers` — bu server tarafda yozilgan `route handler` larda so'rov (`request`) yoki javob (`response`) `header` larini boshqarish imkonini beradi.
+
+- So‘rovdan maxsus `header` ma’lumotlarini olish (masalan, `Authorization`)
+- Javobga kerakli `header` qo‘shish (masalan, `Set-Cookie, Content-Type`)
+- `CORS` yoki `cache` boshqaruvi uchun `header` lar bilan ishlash
+
+```tsx
+import { NextRequest } from "next/server";
+
+export async function GET(request: NextRequest) {
+  const requestHeaders = new Headers(request.headers);
+  console.log(requestHeaders.get("Authorization"));
+
+  return new Response("Profile API Data");
+}
+```
+
+- ` const requestHeaders = new Headers(request.headers);`
+  - `requestning` headerlarini `Headers` obyektiga o‘tkazadi. Bu orqali header'larga osonroq murojaat qilish mumkin.
+- `console.log(requestHeaders.get("Authorization"));`
+  - So‘rovdagi `Authorization` `header` qiymatini konsolga chiqaradi. Bu ko‘pincha `token` yoki `login` ma’lumotlarini tekshirish uchun ishlatiladi.
+- `return new Response("Profile API Data");`
+  - Foydalanuvchiga `"Profile API Data"` degan matnli javob (`Response`) qaytaryapti.
+
+```tsx
+import { NextRequest } from "next/server";
+import { headers } from "next/headers";
+
+export async function GET(request: NextRequest) {
+  const headerList = await headers();
+  console.log(headerList.get("Authorization"));
+
+  return new Response("Profile API Data");
+}
+```
+
+- `import { headers } from "next/headers";`
+  - Bu funksiya yordamida `server` komponent yoki `route handler` ichida so‘rov (`request`) headerlariga kirish mumkin.
+- `const headerList = await headers();`
+  - `headers()` funksiyasi orqali so‘rovdagi barcha header'lar olinadi
+- `console.log(headerList.get("Authorization"));`
+  - `Authorization` header qiymatini konsolga chiqaradi.
+
+```tsx
+export async function GET(request: NextRequest) {
+  return new Response("<h1>Profile API Data</h1>", {
+    headers: {
+      "Content-Type": "text/html",
+    },
+  });
+}
+```
+
+- ` return new Response("<h1>Profile API Data</h1>", {`
+  - `Response` qaytarilmoqda va javobning ichida `<h1>` HTML elementi bor. Ya'ni, bu `HTML` ko‘rinishida matn yuborilmoqda.
+- `headers: {"Content-Type": "text/html"}`
+  - `Content-Type` ni `text/html` deb belgilayapmiz. Bu brauzerga `“bu javob HTML formatda”` ligini bildiradi. Aks holda, brauzer uni oddiy matn deb o'qishi mumkin edi.
