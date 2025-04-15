@@ -11,15 +11,16 @@
 
 ---
 
-| Mundarija                                 |
-| ----------------------------------------- |
-| [1-dars Route Handlers][1-dars]           |
-| [2-dars Handling GET Requests][2-dars]    |
-| [3-dars Handling POST Requests][3-dars]   |
-| [4-dars Dynamic Route Handlers][4-dars]   |
-| [5-dars Handling PATCH Requests][5-dars]  |
-| [6-dars Handling DELETE Requests][6-dars] |
-| [7-dars URL Query Parameters][7-dars]     |
+| Mundarija                                  |
+| ------------------------------------------ |
+| [1-dars Route Handlers][1-dars]            |
+| [2-dars Handling GET Requests][2-dars]     |
+| [3-dars Handling POST Requests][3-dars]    |
+| [4-dars Dynamic Route Handlers][4-dars]    |
+| [5-dars Handling PATCH Requests][5-dars]   |
+| [6-dars Handling DELETE Requests][6-dars]  |
+| [7-dars URL Query Parameters][7-dars]      |
+| [8-dars Headers in Route Handlers][8-dars] |
 
 [1-dars]: https://github.com/muhriddin20056525/nextjs15-route-handlers?tab=readme-ov-file#1-dars-route-handlers
 [2-dars]: https://github.com/muhriddin20056525/nextjs15-route-handlers?tab=readme-ov-file#2-dars-handling-get-requests
@@ -28,6 +29,7 @@
 [5-dars]: https://github.com/muhriddin20056525/nextjs15-route-handlers?tab=readme-ov-file#5-dars-handling-patch-requests
 [6-dars]: https://github.com/muhriddin20056525/nextjs15-route-handlers?tab=readme-ov-file#6-dars-handling-delete-requests
 [7-dars]: https://github.com/muhriddin20056525/nextjs15-route-handlers?tab=readme-ov-file#7-dars-url-query-parameters
+[8-dars]: https://github.com/muhriddin20056525/nextjs15-route-handlers?tab=readme-ov-file#8-dars-headers-in-route-handlers
 
 ---
 
@@ -351,3 +353,61 @@ export async function GET(request: NextRequest) {
   - `Response` qaytarilmoqda va javobning ichida `<h1>` HTML elementi bor. Ya'ni, bu `HTML` ko‘rinishida matn yuborilmoqda.
 - `headers: {"Content-Type": "text/html"}`
   - `Content-Type` ni `text/html` deb belgilayapmiz. Bu brauzerga `“bu javob HTML formatda”` ligini bildiradi. Aks holda, brauzer uni oddiy matn deb o'qishi mumkin edi.
+
+---
+
+# **9-dars Cookies in Route Handlers**
+
+`Cookies` — bu foydalanuvchi brauzerida ma'lumotlarni saqlash uchun ishlatiladigan usul. U asosan foydalanuvchini aniqlash (masalan, login holatini saqlash), til yoki mavzu kabi foydalanuvchi sozlamalarini eslab qolish uchun kerak bo'ladi. Server komponentlarida ham cookie’ni o‘qish va yozish mumkin (cookies() funksiyasi orqali).
+
+```tsx
+export async function GET(request: NextRequest) {
+  return new Response("<h1>Profile API Data</h1>", {
+    headers: {
+      "Content-Type": "text/html",
+      "Set-Cookie": "theme=dark",
+    },
+  });
+}
+```
+
+- `"Set-Cookie": "theme=dark",` - Bu kod cookini frontendga yuboradi
+
+```tsx
+export async function GET(request: NextRequest) {
+  const theme = request.cookies.get("theme");
+  console.log(theme);
+
+  return new Response("<h1>Profile API Data</h1>", {
+    headers: {
+      "Content-Type": "text/html",
+      "Set-Cookie": "theme=dark",
+    },
+  });
+}
+```
+
+- `const theme = request.cookies.get("theme");` - cookieni backendda olish
+
+```tsx
+export async function GET(request: NextRequest) {
+  const cookieStore = await cookies();
+  cookieStore.set("resultsPerPage", "20");
+  console.log(cookieStore.get("resultsPerPage"));
+
+  return new Response("<h1>Profile API Data</h1>", {
+    headers: {
+      "Content-Type": "text/html",
+      "Set-Cookie": "theme=dark",
+    },
+  });
+}
+```
+
+- `const cookieStore = await cookies();` - cookies() funksiyasi chaqirish.
+- `cookieStore.set("resultsPerPage", "20");`
+  - `cookieStorega` yangi `cookie` yozilmoqda.
+  - `"resultsPerPage"` bu cookie kaliti (nomi).
+  - `"20"` esa qiymati
+- `console.log(cookieStore.get("resultsPerPage"));`
+  - `get()` metodi `cookieStore` ichidan kerakli kalitdagi (bu holatda `"resultsPerPage"`) qiymatni qaytaradi.
