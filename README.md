@@ -411,3 +411,22 @@ export async function GET(request: NextRequest) {
   - `"20"` esa qiymati
 - `console.log(cookieStore.get("resultsPerPage"));`
   - `get()` metodi `cookieStore` ichidan kerakli kalitdagi (bu holatda `"resultsPerPage"`) qiymatni qaytaradi.
+
+---
+
+# **10-dars Redirects in Route Handlers**
+
+`Redirect` — bu foydalanuvchini bir URL'dan boshqasiga avtomatik yo‘naltiruvchi funksiyadir. Masalan, `/old-page` ga kirgan foydalanuvchi avtomatik ravishda `/new-page` ga yuboriladi. Bu foydalanuvchini noto‘g‘ri yoki eskirgan sahifalarda qoldirmaslik uchun ishlatiladi
+
+```tsx
+import { redirect } from "next/navigation";
+
+export async function GET() {
+  redirect("/api/v2/users");
+}
+```
+
+- `import { redirect } from "next/navigation";` - Redirectni import qilish
+- `redirect("/api/v2/users");`
+  - Bu yerda foydalanuvchi avtomatik ravishda `/api/v2/users` URL manziliga yonaltiriladi.
+  - Ya'ni `/api/v1/users` ga kirgan foydalanuvchi endi `/api/v2/users` manziliga o'tkaziladi.
