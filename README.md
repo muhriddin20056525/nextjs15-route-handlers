@@ -430,3 +430,34 @@ export async function GET() {
 - `redirect("/api/v2/users");`
   - Bu yerda foydalanuvchi avtomatik ravishda `/api/v2/users` URL manziliga yonaltiriladi.
   - Ya'ni `/api/v1/users` ga kirgan foydalanuvchi endi `/api/v2/users` manziliga o'tkaziladi.
+
+---
+
+# **11-dars Caching in Route Handlers**
+
+`Caching in Route Handlers` — bu route handler `(faqat GET requestda)` ichida cachingni boshqarish imkoniyatidir. Bu orqali siz route handler'laringizda javobni (response) brauzer, CDN yoki server darajasida cache qilishingiz mumkin.
+
+```tsx
+export const dynamic = "force-static";
+
+export async function GET() {
+  return Response.json({ time: new Date().toLocaleTimeString() });
+}
+```
+
+- `export const dynamic = "force-static";`
+  - `"force-static"` bu sahifa statik tarzda oldindan yaratiladi va dynamic rendering ishlatilmaydi
+  - bu endpoint birinchi marta server ishga tushganda (yoki build paytida) generatsiya qilinadi va keyin o‘zgarmaydi. Hamma so‘rovga bitta javob qaytadi.
+
+```tsx
+export const dynamic = "force-static";
+export const revalidate = 10;
+
+export async function GET() {
+  return Response.json({ time: new Date().toLocaleTimeString() });
+}
+```
+
+- `export const revalidate = 10;`
+  - bu sahifa (yoki API javobi) har 10 soniyada bir marta yangilanadi.
+- ushbu kodlar ishlashi uchun avval `npm run build` ba keyin `npm run start` orqali production mode da ishga tushirish kerak developer modeda emas
