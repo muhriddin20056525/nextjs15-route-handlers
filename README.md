@@ -461,3 +461,52 @@ export async function GET() {
 - `export const revalidate = 10;`
   - bu sahifa (yoki API javobi) har 10 soniyada bir marta yangilanadi.
 - ushbu kodlar ishlashi uchun avval `npm run build` ba keyin `npm run start` orqali production mode da ishga tushirish kerak developer modeda emas
+
+---
+
+# **12-dars Middleware**
+
+`Middleware` — bu Next.js’dagi o‘rtadagi funksiyadir, ya'ni foydalanuvchi biror sahifani so‘raganda, sahifa ko‘rsatilishidan oldin ishlaydigan kod.
+
+- User `login` qilganmi yoki yo‘qmi — tekshiradi.
+
+- `URL` ni tekshirib boshqa sahifaga yo‘naltiradi.
+
+- `Cookie`, `token`, `til` sozlamalarini tekshiradi.
+
+- `middleware.ts` yoki `middleware.js` fayli `root` papkada (ya’ni `app/` papkasi tashqarisida) bo‘ladi.
+
+```ts
+import { NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
+
+export function middleware(request: NextRequest) {
+  return NextResponse.redirect(new URL("/", request.url));
+}
+
+export const config = {
+  matcher: "/profile",
+};
+```
+
+- `export function middleware(request: NextRequest) {` - middleware funksiya elon qilish
+- `return NextResponse.redirect(new URL("/", request.url));`
+  - foydalanuvchini bosh sahifaga `(/)` yo‘naltiradi (`redirect`).
+- `new URL("/", request.url) degani:`
+
+  - So‘rovning domenini saqlab qoladi (masalan: `http://localhost:3000/profile` → `http://localhost:3000/`)
+  - Faqat yo‘l (`pathname`) ni `/` ga o‘zgartiradi.
+
+- `matcher: "/profile"` — degani, faqat `/profile` sahifasiga kirganda middleware ishga tushadi.
+
+```ts
+export function middleware(request: NextRequest) {
+  if (request.nextUrl.pathname === "/profile") {
+    return NextResponse.redirect(new URL("/hello", request.nextUrl));
+  }
+}
+```
+
+- `request.nextUrl.pathname` foydalanuvchi qaysi sahifaga kirayotganini tekshiradi.
+- `new URL("/hello", request.nextUrl)`
+  - foydalanuvchi kirgan sahifani `/hello` ga o'zgartiradi
