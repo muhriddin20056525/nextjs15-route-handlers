@@ -1,3 +1,33 @@
+| Mundarija                                      |
+| ---------------------------------------------- |
+| [1-dars Route Handlers][1-dars]                |
+| [2-dars Handling GET Requests][2-dars]         |
+| [3-dars Handling POST Requests][3-dars]        |
+| [4-dars Dynamic Route Handlers][4-dars]        |
+| [5-dars Handling PATCH Requests][5-dars]       |
+| [6-dars Handling DELETE Requests][6-dars]      |
+| [7-dars URL Query Parameters][7-dars]          |
+| [8-dars Headers in Route Handlers][8-dars]     |
+| [9-dars Cookies in Route Handlers][9-dars]     |
+| [10-dars Redirects in Route Handlers][10-dars] |
+| [11-dars Caching in Route Handlers][11-dars]   |
+| [12-dars Middleware][12-dars]                  |
+
+[1-dars]: https://github.com/muhriddin20056525/nextjs15-route-handlers?tab=readme-ov-file#1-dars-route-handlers
+[2-dars]: https://github.com/muhriddin20056525/nextjs15-route-handlers?tab=readme-ov-file#2-dars-handling-get-requests
+[3-dars]: https://github.com/muhriddin20056525/nextjs15-route-handlers?tab=readme-ov-file#3-dars-handling-post-requests
+[4-dars]: https://github.com/muhriddin20056525/nextjs15-route-handlers?tab=readme-ov-file#4-dars-dynamic-route-handlers
+[5-dars]: https://github.com/muhriddin20056525/nextjs15-route-handlers?tab=readme-ov-file#5-dars-handling-patch-requests
+[6-dars]: https://github.com/muhriddin20056525/nextjs15-route-handlers?tab=readme-ov-file#6-dars-handling-delete-requests
+[7-dars]: https://github.com/muhriddin20056525/nextjs15-route-handlers?tab=readme-ov-file#7-dars-url-query-parameters
+[8-dars]: https://github.com/muhriddin20056525/nextjs15-route-handlers?tab=readme-ov-file#8-dars-headers-in-route-handlers
+[9-dars]: https://github.com/muhriddin20056525/nextjs15-server?tab=readme-ov-file#9-dars-cookies-in-route-handlers
+[10-dars]: https://github.com/muhriddin20056525/nextjs15-server?tab=readme-ov-file#10-dars-redirects-in-route-handlers
+[11-dars]: https://github.com/muhriddin20056525/nextjs15-server?tab=readme-ov-file#11-dars-caching-in-route-handlers
+[12-dars]: https://github.com/muhriddin20056525/nextjs15-server?tab=readme-ov-file#12-dars-middleware
+
+---
+
 # **Nextjs 15 Route Handlers**
 
 `Route Handler` bu `API` endpointlarini yaratish uchun ishlatiladigan funksiya bo‘lib, u `App Router` (app papkasi) ichida joylashgan bo‘ladi.
@@ -8,28 +38,6 @@
   - `Response` va `Request` obyektlaridan foydalanadi
   - `Middleware` kabi ishlashi mumkin
   - `Edge` va `Serverless` funksiyalarni qo‘llab-quvvatlaydi
-
----
-
-| Mundarija                                  |
-| ------------------------------------------ |
-| [1-dars Route Handlers][1-dars]            |
-| [2-dars Handling GET Requests][2-dars]     |
-| [3-dars Handling POST Requests][3-dars]    |
-| [4-dars Dynamic Route Handlers][4-dars]    |
-| [5-dars Handling PATCH Requests][5-dars]   |
-| [6-dars Handling DELETE Requests][6-dars]  |
-| [7-dars URL Query Parameters][7-dars]      |
-| [8-dars Headers in Route Handlers][8-dars] |
-
-[1-dars]: https://github.com/muhriddin20056525/nextjs15-route-handlers?tab=readme-ov-file#1-dars-route-handlers
-[2-dars]: https://github.com/muhriddin20056525/nextjs15-route-handlers?tab=readme-ov-file#2-dars-handling-get-requests
-[3-dars]: https://github.com/muhriddin20056525/nextjs15-route-handlers?tab=readme-ov-file#3-dars-handling-post-requests
-[4-dars]: https://github.com/muhriddin20056525/nextjs15-route-handlers?tab=readme-ov-file#4-dars-dynamic-route-handlers
-[5-dars]: https://github.com/muhriddin20056525/nextjs15-route-handlers?tab=readme-ov-file#5-dars-handling-patch-requests
-[6-dars]: https://github.com/muhriddin20056525/nextjs15-route-handlers?tab=readme-ov-file#6-dars-handling-delete-requests
-[7-dars]: https://github.com/muhriddin20056525/nextjs15-route-handlers?tab=readme-ov-file#7-dars-url-query-parameters
-[8-dars]: https://github.com/muhriddin20056525/nextjs15-route-handlers?tab=readme-ov-file#8-dars-headers-in-route-handlers
 
 ---
 
